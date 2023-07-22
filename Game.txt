@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Send to Discord</title>
+</head>
+<body>
+    <h2>Send Data to Discord</h2>
+    <form id="discordForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br>
+
+        <label for="thing1">Thing 1:</label>
+        <input type="text" id="thing1" name="thing1"><br>
+
+        <label for="thing2">Thing 2:</label>
+        <input type="text" id="thing2" name="thing2"><br>
+
+        <label for="thing3">Thing 3:</label>
+        <input type="text" id="thing3" name="thing3"><br>
+
+        <label for="thing4">Thing 4:</label>
+        <input type="text" id="thing4" name="thing4"><br>
+
+        <label for="thing5">Thing 5:</label>
+        <input type="text" id="thing5" name="thing5"><br>
+
+        <button type="button" onclick="sendToDiscord()">Send</button>
+    </form>
+
+    <script>
+        function sendToDiscord() {
+            const name = document.getElementById("name").value;
+            const thing1 = document.getElementById("thing1").value;
+            const thing2 = document.getElementById("thing2").value;
+            const thing3 = document.getElementById("thing3").value;
+            const thing4 = document.getElementById("thing4").value;
+            const thing5 = document.getElementById("thing5").value;
+
+            // Replace 'YOUR_DISCORD_WEBHOOK_URL' with the actual webhook URL provided by Discord
+            const webhookURL = 'YOUR_DISCORD_WEBHOOK_URL';
+
+            // Format the data to be sent to Discord
+            const data = {
+                content: `Name: ${name}\nThing 1: ${thing1}\nThing 2: ${thing2}\nThing 3: ${thing3}\nThing 4: ${thing4}\nThing 5: ${thing5}`,
+            };
+
+            // Send the data to Discord via a webhook
+            fetch(webhookURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Data sent to Discord successfully!');
+                } else {
+                    alert('Failed to send data to Discord. Please check the webhook configuration.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
