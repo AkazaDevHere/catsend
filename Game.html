@@ -1,47 +1,119 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Send to Discord</title>
+    <title>تقديم جاسوس سري</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #696969; /* Set the background color */
+        }
+
+        #discordForm {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 5px solid #000000;
+            padding: 20px;
+            border-radius: 2px;
+            max-width: 400px;
+            background-color: #B06038; /* Set the form background color */
+        }
+
+        /* Updated styles for labels and input fields */
+        #discordForm label {
+            display: block;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        #discordForm input {
+            width: 100%;
+            padding: 5px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 0px;
+        }
+
+        .ware-type-frame {
+            border: 0px solid #7a7a7a; /* Set the frame color */
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        /* Updated styles for the "Send" button */
+        #sendButton {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            margin: 15px auto;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #sendButton:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-    <h2>Send Data to Discord</h2>
-    <form id="discordForm">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name"><br>
+    <div id="discordForm">
+        <h2>تقديم جاسوس سري</h2>
+        <form>
+            <label for="اسم قط">الاسم:</label>
+            <input type="text" id="اسم قط" name="اسم قط"><br>
 
-        <label for="thing1">Thing 1:</label>
-        <input type="text" id="thing1" name="thing1"><br>
+            <!-- Adding the "ware type" frame -->
+            <div class="ware-type-frame">
+                <label for="Qus1">كيف رح تعذب الكلب:</label>
+                <input type="text" id="Qus1" name="Qus1"><br>
 
-        <label for="thing2">Thing 2:</label>
-        <input type="text" id="thing2" name="thing2"><br>
+                <label for="Qus2">اعطيني ابشع طرق التعذيب الي هتعذب فيها الكلب:</label>
+                <input type="text" id="Qus2" name="Qus2"><br>
 
-        <label for="thing3">Thing 3:</label>
-        <input type="text" id="thing3" name="thing3"><br>
+                <label for="Qus3">هل تعرف كلاب:</label>
+                <input type="text" id="Qus3" name="Qus3"><br>
+            </div>
 
-        <label for="thing4">Thing 4:</label>
-        <input type="text" id="thing4" name="thing4"><br>
-
-        <label for="thing5">Thing 5:</label>
-        <input type="text" id="thing5" name="thing5"><br>
-
-        <button type="button" onclick="sendToDiscord()">Send</button>
-    </form>
+            <button type="button" id="sendButton" onclick="sendToDiscord()">send</button>
+        </form>
+    </div>
 
     <script>
         function sendToDiscord() {
-            const name = document.getElementById("name").value;
-            const thing1 = document.getElementById("thing1").value;
-            const thing2 = document.getElementById("thing2").value;
-            const thing3 = document.getElementById("thing3").value;
-            const thing4 = document.getElementById("thing4").value;
-            const thing5 = document.getElementById("thing5").value;
+            // Check if the submission timestamp exists in localStorage
+            const lastSubmissionTime = localStorage.getItem("lastSubmissionTime");
+            if (lastSubmissionTime) {
+                const twentyFourHoursAgo = Date.now() - 24 * 60 * 60 * 1000;
+                if (lastSubmissionTime > twentyFourHoursAgo) {
+                    const remainingTime = new Date(twentyFourHoursAgo + 24 * 60 * 60 * 1000);
+                    alert("You can submit the form again after " + remainingTime.toLocaleString());
+                    return;
+                }
+            }
+
+            // Extract form data
+            const name = document.getElementById("اسم قط").value;
+            const Qus1 = document.getElementById("Qus1").value;
+            const Qus2 = document.getElementById("Qus2").value;
+            const Qus3 = document.getElementById("Qus3").value;
 
             // Replace 'YOUR_DISCORD_WEBHOOK_URL' with the actual webhook URL provided by Discord
-            const webhookURL = 'YOUR_DISCORD_WEBHOOK_URL';
+            const webhookURL = 'https://discord.com/api/webhooks/1132354378943189015/ksrRyPzCFYRNgXrXxTqUTZ1lqlfRCqdPRZT-IXDTWMEHW8b03IN1PR9EVaJiwoDZhqOR';
 
             // Format the data to be sent to Discord
             const data = {
-                content: `Name: ${name}\nThing 1: ${thing1}\nThing 2: ${thing2}\nThing 3: ${thing3}\nThing 4: ${thing4}\nThing 5: ${thing5}`,
+                content: `اسم قط: ${name}\nQus1: ${Qus1}\nQus2: ${Qus2}\nQus3: ${Qus3}`,
             };
 
             // Send the data to Discord via a webhook
@@ -54,7 +126,9 @@
             })
             .then(response => {
                 if (response.ok) {
-                    alert('Data sent to Discord successfully!');
+                    const currentTime = Date.now();
+                    localStorage.setItem("lastSubmissionTime", currentTime);
+                    alert('Data sent to Discord successfully! You can submit again after 24 hours.');
                 } else {
                     alert('Failed to send data to Discord. Please check the webhook configuration.');
                 }
